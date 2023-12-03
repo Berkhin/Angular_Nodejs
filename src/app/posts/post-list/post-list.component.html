@@ -1,0 +1,17 @@
+<mat-accordion multi="true" *ngIf="postList, else noPosts">
+  <mat-expansion-panel *ngFor="let post of postList">
+    <mat-expansion-panel-header>
+      {{post.title}}
+    </mat-expansion-panel-header>
+    <p>{{post.content}}</p>
+    <mat-action-row>
+      <button mat-button color="primary">EDIT</button>
+      <button mat-button color="worm">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+<ng-template #noPosts>
+  <h2 class="info-text mat-body-1">There are no posts</h2>
+</ng-template>
