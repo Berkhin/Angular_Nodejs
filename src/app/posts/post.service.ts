@@ -24,6 +24,7 @@ export class PostService {
               title: post.title,
               content: post.content,
               id: post._id,
+              imagePath: post.imagePath,
             };
           });
         }),
@@ -40,18 +41,41 @@ export class PostService {
   }
 
   getPost(postId: string) {
-    return this.http.get<{ _id: string; title: string; content: string }>(
-      'http://localhost:3000/api/posts/' + postId,
-    );
+    return this.http.get<{
+      _id: string;
+      title: string;
+      content: string;
+      imagePath: string;
+    }>('http://localhost:3000/api/posts/' + postId);
   }
 
-  updatePost(id: string, title: string, content: string, image: File) {
-    const post: Post = { id, title, content };
+  updatePost(id: string, title: string, content: string, image: File | string) {
+    let postData: Post | FormData;
+    if (typeof image === 'object') {
+      postData = new FormData();
+      postData.append('id', id);
+      postData.append('title', title);
+      postData.append('content', content);
+      postData.append('image', image, title);
+    } else {
+      postData = {
+        id,
+        title,
+        content,
+        imagePath: image,
+      };
+    }
     this.http
-      .put('http://localhost:3000/api/posts/' + id, post)
+      .put('http://localhost:3000/api/posts/' + id, postData)
       .subscribe((res) => {
         const updatedPost = [...this.posts];
-        const oldIndexPost = updatedPost.findIndex((p) => p.id === post.id);
+        const oldIndexPost = updatedPost.findIndex((p) => p.id === id);
+        const post: Post = {
+          id,
+          title,
+          content,
+          imagePath: '',
+        };
         updatedPost[oldIndexPost] = post;
         this.posts = updatedPost;
         this.onSetPost.next([...this.posts]);
@@ -71,7 +95,12 @@ export class PostService {
         post: Post;
       }>('http://localhost:3000/api/posts', postData)
       .subscribe((res) => {
-        const post: Post = { id: res.post.id, title, content };
+        const post: Post = {
+          id: res.post.id,
+          title,
+          content,
+          imagePath: res.post.imagePath,
+        };
         this.posts.push(post);
         this.onSetPost.next([...this.posts]);
         this.router.navigate(['/']);

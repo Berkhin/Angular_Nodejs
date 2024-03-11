@@ -30,7 +30,7 @@ router.post("", multer({ storage }).single("image"), (req, res, next) => {
   const posts = new Post({
     title: req.body.title,
     content: req.body.content,
-    imagePath: url + "/images" + req.file.filename,
+    imagePath: url + "/images/" + req.file.filename,
   });
   posts.save().then((response) => {
     const postId = response._id;
@@ -63,11 +63,17 @@ router.get("/:id", (req, res, next) => {
   });
 });
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", multer({ storage }).single("image"), (req, res, next) => {
+  let imagePath = req.body.imagePath;
+  if(req.file){
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/images/" + req.file.filename;
+  }
   const updatedPost = new Post({
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
+    imagePath: req.body.imagePath
   });
   Post.updateOne({ _id: req.params.id }, updatedPost).then((response) => {
     res.status(200).json({ message: "updated successfully!" });

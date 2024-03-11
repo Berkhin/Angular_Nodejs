@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -6,6 +7,7 @@ const postRoutes = require("../src/app/router/posts");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/images', express.static(path.join('backend/images')))
 mongoose
   .connect(
     "mongodb+srv://yauhen:@cluster0.a4fmaxt.mongodb.net/?retryWrites=true&w=majority",
