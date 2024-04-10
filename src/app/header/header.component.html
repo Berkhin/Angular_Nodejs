@@ -8,10 +8,12 @@
       >
     </li>
     <li *ngIf="!isAuthenticated">
-      <a mat-button routerLink="/login" routerLinkActive="active-link">Login</a>
+      <a mat-button routerLink="/auth/login" routerLinkActive="active-link"
+        >Login</a
+      >
     </li>
     <li *ngIf="!isAuthenticated">
-      <a mat-button routerLink="/signup" routerLinkActive="active-link"
+      <a mat-button routerLink="/auth/signup" routerLinkActive="active-link"
         >Signup</a
       >
     </li>

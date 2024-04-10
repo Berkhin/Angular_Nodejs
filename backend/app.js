@@ -3,15 +3,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
-const postRoutes = require("../src/app/router/posts");
-const userRoutes = require("../src/app/router/user");
+const postRoutes = require("./routes/posts");
+const userRoutes = require("./routes/user");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join('backend/images')))
 mongoose
   .connect(
-    "",
+    "mongodb+srv://yauhen:" + process.env.MONGO_ATLAS_PW + "@cluster0.a4fmaxt.mongodb.net/?retryWrites=true&w=majority",
   )
   .then(() => {
     console.log("connected to database!");

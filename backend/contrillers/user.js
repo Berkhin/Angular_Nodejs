@@ -1,10 +1,8 @@
-const express = require("express");
-const User = require("../../../backend/Models/user");
-const router = express.Router();
 const bcrypt = require("bcrypt");
 const webToken = require("jsonwebtoken");
+const User = require("../Models/user");
 
-router.post("/signup", (req, res, next) => {
+exports.createUser = (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(hash => {
         const user = new User({
             email: req.body.email,
@@ -22,10 +20,9 @@ router.post("/signup", (req, res, next) => {
         })
     })
 
-});
+}
 
-
-router.post("/login", (req, res, next) => {
+exports.userLogin = (req, res, next) => {
     User.findOne({ email: req.body.email }).then(user => {
         let fetchedUser;
         if (!user) {
@@ -52,6 +49,4 @@ router.post("/login", (req, res, next) => {
             })
         })
     });
-});
-
-module.exports = router;
+} 
