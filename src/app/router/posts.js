@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const Post = require("../../../backend/Models/post");
+const checkAuth = require("../../../backend/middleware/check-auth") 
 
 const MINE_TYPE_MAP = {
   "image/png": "png",
@@ -25,7 +26,7 @@ const storage = multer.diskStorage({
   },
 });
 
-router.post("", multer({ storage }).single("image"), (req, res, next) => {
+router.post("", checkAuth, multer({ storage }).single("image"), (req, res, next) => {
   const url = req.protocol + "://" + req.get("host");
   const posts = new Post({
     title: req.body.title,
@@ -74,7 +75,7 @@ router.get("/:id", (req, res, next) => {
   });
 });
 
-router.put("/:id", multer({ storage }).single("image"), (req, res, next) => {
+router.put("/:id",checkAuth, multer({ storage }).single("image"), (req, res, next) => {
   let imagePath = req.body.imagePath;
   if (req.file) {
     const url = req.protocol + "://" + req.get("host");

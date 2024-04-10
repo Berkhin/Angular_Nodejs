@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { Post } from './post.model';
 import { Injectable } from '@angular/core';
 import { map, Subject } from 'rxjs';

@@ -2,10 +2,21 @@
   <a routerLink="/">MyApplication</a>
   <span class="spacer"></span>
   <ul>
-    <li>
+    <li *ngIf="isAuthenticated">
       <a mat-button routerLink="/create" routerLinkActive="active-link"
         >Create</a
       >
+    </li>
+    <li *ngIf="!isAuthenticated">
+      <a mat-button routerLink="/login" routerLinkActive="active-link">Login</a>
+    </li>
+    <li *ngIf="!isAuthenticated">
+      <a mat-button routerLink="/signup" routerLinkActive="active-link"
+        >Signup</a
+      >
+    </li>
+    <li *ngIf="isAuthenticated">
+      <button (click)="onLogout()" mat-button>Logout</button>
     </li>
   </ul>
 </mat-toolbar>
